@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Step1ne AI 顧問諮詢服務</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --accent: #f59e0b;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #1e293b;
+      --text-light: #64748b;
+      --border: #e2e8f0;
+      --gradient: linear-gradient(135deg, #1e3a5f 0%, #2563eb 100%);
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans TC', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* Hero */
+    .hero {
+      background: var(--gradient);
+      color: white;
+      padding: 80px 20px 60px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+      animation: pulse 8s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+    .hero h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+      position: relative;
+    }
+    .hero p {
+      font-size: 1.15rem;
+      opacity: 0.9;
+      max-width: 600px;
+      margin: 0 auto;
+      position: relative;
+    }
+    .hero .badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(10px);
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Section */
+    .section {
+      padding: 60px 0;
+    }
+    .section-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+    .section-subtitle {
+      text-align: center;
+      color: var(--text-light);
+      margin-bottom: 40px;
+      font-size: 1rem;
+    }
+
+    /* Service Cards */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+    .service-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .service-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+      border-color: var(--primary);
+    }
+    .service-card .icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 16px;
+    }
+    .service-card h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .service-card p {
+      color: var(--text-light);
+      font-size: 0.9rem;
+      margin-bottom: 16px;
+    }
+    .service-card .price {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+    .service-card .price span {
+      font-size: 0.8rem;
+      font-weight: 400;
+      color: var(--text-light);
+    }
+    .service-card .tag {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: #dbeafe;
+      color: var(--primary);
+      padding: 3px 10px;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .icon-blue { background: #dbeafe; }
+    .icon-green { background: #d1fae5; }
+    .icon-purple { background: #ede9fe; }
+    .icon-orange { background: #ffedd5; }
+    .icon-red { background: #fee2e2; }
+    .icon-teal { background: #ccfbf1; }
+
+    /* Packages */
+    .packages {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+    @media (max-width: 768px) {
+      .packages { grid-template-columns: 1fr; }
+    }
+    .package {
+      background: var(--card);
+      border: 2px solid var(--border);
+      border-radius: 16px;
+      padding: 32px 24px;
+      text-align: center;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    .package:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+    }
+    .package.featured {
+      border-color: var(--primary);
+      background: linear-gradient(180deg, #eff6ff 0%, #ffffff 40%);
+    }
+    .package.featured::before {
+      content: '最受歡迎';
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--primary);
+      color: white;
+      padding: 4px 16px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    .package h3 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .package .pkg-price {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+    .package .pkg-price span {
+      font-size: 1rem;
+    }
+    .package .pkg-unit {
+      color: var(--text-light);
+      font-size: 0.85rem;
+      margin-bottom: 20px;
+    }
+    .package ul {
+      list-style: none;
+      text-align: left;
+      margin-bottom: 24px;
+    }
+    .package ul li {
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .package ul li::before {
+      content: '✓';
+      color: var(--primary);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .package .btn {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      border: 2px solid var(--primary);
+      border-radius: 10px;
+      background: transparent;
+      color: var(--primary);
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+      text-align: center;
+    }
+    .package .btn:hover {
+      background: var(--primary);
+      color: white;
+    }
+    .package.featured .btn {
+      background: var(--primary);
+      color: white;
+    }
+    .package.featured .btn:hover {
+      background: var(--primary-dark);
+    }
+
+    /* Divider */
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 0;
+    }
+
+    /* Tutorial Section */
+    .tutorial-hero {
+      background: linear-gradient(135deg, #dc2626 0%, #f59e0b 100%);
+      color: white;
+      padding: 50px 20px;
+      text-align: center;
+    }
+    .tutorial-hero h2 {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+    .tutorial-hero p {
+      opacity: 0.9;
+      font-size: 1.05rem;
+    }
+
+    /* What is */
+    .what-is {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      margin-bottom: 32px;
+    }
+    .what-is h3 {
+      font-size: 1.3rem;
+      margin-bottom: 16px;
+    }
+    .feature-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+    .feature-tags .tag {
+      background: #fef3c7;
+      color: #92400e;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+
+    /* Steps */
+    .steps {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+    .step {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      transition: all 0.3s ease;
+    }
+    .step:hover {
+      border-color: var(--accent);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    }
+    .step-num {
+      width: 40px;
+      height: 40px;
+      min-width: 40px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1.1rem;
+    }
+    .step h4 {
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+    }
+    .step p {
+      color: var(--text-light);
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+    }
+    .step code {
+      display: block;
+      background: #1e293b;
+      color: #a5f3fc;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      overflow-x: auto;
+      margin-top: 8px;
+    }
+
+    /* Comparison Table */
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--card);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .compare-table th {
+      background: #1e293b;
+      color: white;
+      padding: 14px 20px;
+      text-align: left;
+      font-weight: 600;
+    }
+    .compare-table td {
+      padding: 12px 20px;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.9rem;
+    }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .compare-table tr:nth-child(even) { background: #f8fafc; }
+
+    /* FAQ */
+    .faq-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .faq-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+    }
+    .faq-item h4 {
+      color: #dc2626;
+      font-size: 0.95rem;
+      margin-bottom: 8px;
+    }
+    .faq-item p {
+      color: var(--text-light);
+      font-size: 0.85rem;
+    }
+
+    /* Payment */
+    .payment-info {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 32px;
+      text-align: center;
+    }
+    .payment-methods {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+    .payment-method {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1rem;
+      color: var(--text);
+    }
+    .payment-note {
+      color: var(--text-light);
+      font-size: 0.85rem;
+      margin-top: 12px;
+    }
+
+    /* Footer */
+    .footer {
+      background: #1e293b;
+      color: #94a3b8;
+      text-align: center;
+      padding: 30px 20px;
+      font-size: 0.85rem;
+    }
+    .footer a {
+      color: #60a5fa;
+      text-decoration: none;
+    }
+
+    /* CTA */
+    .cta-section {
+      background: var(--gradient);
+      color: white;
+      padding: 50px 20px;
+      text-align: center;
+    }
+    .cta-section h2 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+    .cta-section p {
+      opacity: 0.9;
+      margin-bottom: 24px;
+    }
+    .cta-btn {
+      display: inline-block;
+      background: white;
+      color: var(--primary);
+      padding: 14px 36px;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .cta-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .hero h1 { font-size: 1.8rem; }
+      .services-grid { grid-template-columns: 1fr; }
+      .step { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="badge">🤖 AI 顧問服務</div>
+    <h1>Step1ne AI 顧問諮詢服務</h1>
+    <p>協助企業導入 AI Agent，從工具選型、系統架設到團隊培訓，一站搞定</p>
+  </section>
+
+  <!-- Part 1: Services -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">服務項目與收費</h2>
+      <p class="section-subtitle">依需求選擇適合的服務，所有方案皆含 7 天售後支援</p>
+
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="icon icon-blue">💬</div>
+          <h3>基礎諮詢</h3>
+          <p>AI 工具選型、流程規劃、需求討論，線上或現場皆可</p>
+          <div class="price">NT$ 2,000 <span>/ 小時</span></div>
+        </div>
+
+        <div class="service-card">
+          <div class="icon icon-green">🛠️</div>
+          <h3>系統架設</h3>
+          <p>AI Agent 環境建置（OpenClaw / Claude Code 等），含基礎設定與測試</p>
+          <div class="price">NT$ 5,000 <span>/ 次</span></div>
+        </div>
+
+        <div class="service-card">
+          <div class="icon icon-purple">🔗</div>
+          <h3>客製整合</h3>
+          <p>串接企業現有系統（CRM、TG Bot、API 等），依複雜度報價</p>
+          <div class="price">NT$ 8,000 ~ 15,000 <span>/ 次</span></div>
+        </div>
+
+        <div class="service-card">
+          <div class="icon icon-orange">👥</div>
+          <div class="tag">小班制</div>
+          <h3>小班教學</h3>
+          <p>5~6 人精緻課程，含客製化提示詞需求，手把手教到會</p>
+          <div class="price">NT$ 5,000 <span>/ 場</span></div>
+        </div>
+
+        <div class="service-card">
+          <div class="icon icon-red">🎓</div>
+          <div class="tag">大班制</div>
+          <h3>大班教學</h3>
+          <p>30~50 人企業培訓課程，含完整教學文件</p>
+          <div class="price">NT$ 35,000 <span>/ 場</span></div>
+        </div>
+
+        <div class="service-card">
+          <div class="icon icon-teal">📅</div>
+          <h3>月度顧問</h3>
+          <p>持續優化、問題排除、功能擴充，每月含 4 小時服務時數</p>
+          <div class="price">NT$ 8,000 <span>/ 月</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Packages -->
+  <section class="section" style="background: #f1f5f9; padding-top: 50px; padding-bottom: 50px;">
+    <div class="container">
+      <h2 class="section-title">套裝方案</h2>
+      <p class="section-subtitle">選擇最適合你的組合，省錢又省心</p>
+
+      <div class="packages">
+        <div class="package">
+          <h3>入門包</h3>
+          <div class="pkg-price"><span>NT$</span> 8,000</div>
+          <div class="pkg-unit">一次性費用</div>
+          <ul>
+            <li>基礎諮詢 1 小時</li>
+            <li>OpenClaw 安裝設定</li>
+            <li>小班教學 1 場</li>
+            <li>教學文件</li>
+            <li>7 天售後支援</li>
+          </ul>
+          <a href="#contact" class="btn">了解更多</a>
+        </div>
+
+        <div class="package featured">
+          <h3>標準包</h3>
+          <div class="pkg-price"><span>NT$</span> 20,000</div>
+          <div class="pkg-unit">一次性費用</div>
+          <ul>
+            <li>諮詢 2 小時</li>
+            <li>系統架設</li>
+            <li>客製整合</li>
+            <li>小班教學 1 場</li>
+            <li>教學文件</li>
+            <li>7 天售後支援</li>
+          </ul>
+          <a href="#contact" class="btn">立即諮詢</a>
+        </div>
+
+        <div class="package">
+          <h3>進階包</h3>
+          <div class="pkg-price"><span>NT$</span> 28,000</div>
+          <div class="pkg-unit">含首月顧問</div>
+          <ul>
+            <li>標準包全部內容</li>
+            <li>首月顧問服務</li>
+            <li>持續優化調整</li>
+            <li>問題即時排除</li>
+            <li>功能擴充建議</li>
+          </ul>
+          <a href="#contact" class="btn">了解更多</a>
+        </div>
+      </div>
+
+      <!-- Payment -->
+      <div class="payment-info">
+        <h3 style="margin-bottom: 8px;">付款方式</h3>
+        <div class="payment-methods">
+          <div class="payment-method">🏦 銀行轉帳</div>
+          <div class="payment-method">💚 Line Pay</div>
+          <div class="payment-method">💵 現金</div>
+        </div>
+        <p class="payment-note">諮詢前收取 50% 訂金，完成後結清尾款 ｜ 月度顧問每月初預付</p>
+        <p class="payment-note">以上費用為參考價格，實際依需求複雜度調整 ｜ 現場服務視距離酌收交通費</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- Part 2: Tutorial -->
+  <section class="tutorial-hero">
+    <h2>🦞 OpenClaw 龍蝦安裝教學</h2>
+    <p>從零開始，10 分鐘擁有你的 AI 管家</p>
+  </section>
+
+  <section class="section">
+    <div class="container">
+
+      <!-- What is -->
+      <div class="what-is">
+        <h3>什麼是 OpenClaw？</h3>
+        <p>OpenClaw（龍蝦）是開源 AI Agent 框架，讓 AI 擁有「手」和「長期記憶」。<br>
+        簡單說：ChatGPT 是「會回答的大腦」，OpenClaw 是「會動手做事的管家」。</p>
+        <div class="feature-tags">
+          <span class="tag">🖥️ 操作電腦</span>
+          <span class="tag">📱 30+ 通訊平台</span>
+          <span class="tag">🧩 5,700+ 技能</span>
+          <span class="tag">⏰ 24/7 常駐</span>
+          <span class="tag">💾 RAM 2GB 即可</span>
+        </div>
+      </div>
+
+      <!-- Steps -->
+      <h3 class="section-title" style="font-size: 1.4rem; margin-bottom: 24px;">安裝步驟</h3>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div>
+            <h4>一鍵安裝</h4>
+            <p>macOS / Linux 打開終端機，貼上以下指令：</p>
+            <code>curl -fsSL https://openclaw.ai/install.sh | bash</code>
+            <p style="margin-top: 10px;">Windows 用 PowerShell（系統管理員）：</p>
+            <code>iwr -useb https://openclaw.ai/install.ps1 | iex</code>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">2</div>
+          <div>
+            <h4>初始化設定</h4>
+            <p>執行設定向導，依序選擇 AI 模型、通訊平台、技能模組：</p>
+            <code>openclaw onboard</code>
+            <p style="margin-top: 10px;">向導會引導你完成：啟動模式 → AI 供應商 → 聊天工具 → 埠口 → 技能 → API Key</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">3</div>
+          <div>
+            <h4>接上 Telegram</h4>
+            <p>先到 Telegram 找 @BotFather 建立 Bot 拿 Token，然後設定：</p>
+            <code>openclaw config set telegram.token "你的Bot Token"</code>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">4</div>
+          <div>
+            <h4>啟動！</h4>
+            <p>一切就緒，啟動 OpenClaw：</p>
+            <code>openclaw start</code>
+            <p style="margin-top: 10px;">瀏覽器會自動開啟 http://127.0.0.1:18789/chat，在 Telegram 對 Bot 發訊息測試即可。</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">5</div>
+          <div>
+            <h4>安裝技能</h4>
+            <p>OpenClaw 的技能就像 App，按需安裝：</p>
+            <code>openclaw skill search 關鍵字
+openclaw skill install 技能名稱
+openclaw skill list</code>
+            <p style="margin-top: 10px;">常用：web-search（搜尋）、file-manager（檔案）、calendar（行事曆）、email-agent（郵件）</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">6</div>
+          <div>
+            <h4>常駐運行（24/7）</h4>
+            <p>用 pm2 讓 OpenClaw 不斷線：</p>
+            <code>npm i -g pm2
+pm2 start "openclaw start" --name lobster
+pm2 save && pm2 startup</code>
+          </div>
+        </div>
+      </div>
+
+      <!-- Comparison -->
+      <h3 class="section-title" style="font-size: 1.4rem; margin-bottom: 24px;">OpenClaw vs Claude Code Channels</h3>
+      <table class="compare-table" style="margin-bottom: 40px;">
+        <thead>
+          <tr>
+            <th style="width: 25%;"></th>
+            <th style="width: 37.5%;">🦞 OpenClaw 龍蝦</th>
+            <th style="width: 37.5%;">⚡ Claude Code Channels</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>平台支援</strong></td>
+            <td>30+（TG、LINE、Slack…）</td>
+            <td>Telegram + Discord</td>
+          </tr>
+          <tr>
+            <td><strong>常駐能力</strong></td>
+            <td>24/7 雲端或本機常駐</td>
+            <td>需電腦開著 + session 不關</td>
+          </tr>
+          <tr>
+            <td><strong>開發能力</strong></td>
+            <td>社群技能，不能直接改 code</td>
+            <td>直接讀寫專案程式碼 + DB</td>
+          </tr>
+          <tr>
+            <td><strong>適合場景</strong></td>
+            <td>通用自動化、客服、日常助手</td>
+            <td>軟體開發、系統操作</td>
+          </tr>
+          <tr>
+            <td><strong>學習門檻</strong></td>
+            <td>低（有圖形介面）</td>
+            <td>中（需懂終端機）</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- FAQ -->
+      <h3 class="section-title" style="font-size: 1.4rem; margin-bottom: 24px;">常見問題</h3>
+      <div class="faq-grid">
+        <div class="faq-item">
+          <h4>安裝失敗？</h4>
+          <p>確認 Node.js 版本 ≥ 22，執行 node -v 檢查</p>
+        </div>
+        <div class="faq-item">
+          <h4>Bot 沒回應？</h4>
+          <p>確認 Token 正確且 OpenClaw 正在運行中</p>
+        </div>
+        <div class="faq-item">
+          <h4>記憶體不足？</h4>
+          <p>最低需求 2GB RAM，關掉不必要的程式</p>
+        </div>
+        <div class="faq-item">
+          <h4>想換 AI 模型？</h4>
+          <p>執行 openclaw config set model.provider 供應商名</p>
+        </div>
+        <div class="faq-item">
+          <h4>技能裝不上？</h4>
+          <p>執行 openclaw skill update 更新清單後重試</p>
+        </div>
+        <div class="faq-item">
+          <h4>怎麼接 LINE？</h4>
+          <p>onboard 時選擇 LINE，或用 openclaw config 設定</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section" id="contact">
+    <h2>準備好導入 AI 了嗎？</h2>
+    <p>無論你是想安裝龍蝦、架設系統還是團隊培訓，我們都能幫你搞定</p>
+    <a href="https://line.me/" class="cta-btn">立即聯繫我們</a>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>© 2026 Step1ne AI Consulting. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>
